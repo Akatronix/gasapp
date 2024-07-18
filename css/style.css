@@ -45,6 +45,7 @@ img {
   background: #f4f1f1;
   padding: 20px;
   overflow-x: scroll;
+  overflow-y:hidden;
 }
 .chat {
   padding: 5px 20px;

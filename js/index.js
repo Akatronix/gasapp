@@ -59,7 +59,8 @@ function runRequests() {
 }
 
 // Run requests every 1 second
-setInterval(runRequests, 1000 * 12);
+//setInterval(runRequests, 1000 * 12);
+setInterval(runRequests, 1000);
 
 sendButton.onclick = sendControl;
 

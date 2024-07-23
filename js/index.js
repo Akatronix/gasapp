@@ -42,8 +42,8 @@ async function makeGetRequest(url) {
 }
 
 // URL for POST and GET requests
-const postUrl = "https://backend-server-ruby.vercel.app/control";
-const getUrl = "https://backend-server-ruby.vercel.app/message";
+const postUrl = "https://iotserveremailer.vercel.app/control";
+const getUrl = "https://iotserveremailer.vercel.app/message";
 
 // Data to send in the POST request
 const ONData = {

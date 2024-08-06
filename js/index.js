@@ -6,9 +6,7 @@ let flag = false;
 let messageData = 0;
 let sms = "";
 
-(function () {
-  emailjs.init("Ap8PvB2SVMNtRgf0X"); // Replace 'YOUR_USER_ID' with your actual EmailJS user ID
-})();
+
 
 // Function to make an HTTPS POST request
 async function makePostRequest(url, data) {

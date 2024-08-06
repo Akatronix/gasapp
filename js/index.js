@@ -2,6 +2,14 @@ let inputValue = document.getElementById("text");
 let sendButton = document.getElementById("button");
 let container = document.querySelector(".messages");
 
+let flag = false;
+let messageData = 0;
+let sms = "";
+
+(function () {
+  emailjs.init("Ap8PvB2SVMNtRgf0X"); // Replace 'YOUR_USER_ID' with your actual EmailJS user ID
+})();
+
 // Function to make an HTTPS POST request
 async function makePostRequest(url, data) {
   try {
@@ -26,18 +34,32 @@ async function makeGetRequest(url) {
     const response = await fetch(url);
     const responseData = await response.json();
     console.log("GET Response:", responseData);
+
+    if (responseData.gas) {
+      if (responseData.gas < 400 && flag === false) {
+        flag = true;
+      } else if (responseData.gas > 500 && flag == true) {
+        messageData = responseData.gas;
+        sendEmail();
+      }
+    }
+
+    console.log(flag);
+
     let htmlToAppend = `
             <div class="bot">
                 <div class="col">
                     <p class="text">Gas value: ${responseData.gas} </p>
-                    <p class="text"> switch state: ${responseData.toggle}</p>
+                    <p class="text"> switch state: ${responseData.toggle}</p><br/>
+                    ${sms}
                 </div>
             </div>
         `;
     container.insertAdjacentHTML("beforeend", htmlToAppend);
     container.scrollTop = container.scrollHeight;
+    sms = "";
   } catch (error) {
-    console.error("Error making GET request:", error);
+    console.log("Error making GET request:", error);
   }
 }
 
@@ -60,7 +82,7 @@ function runRequests() {
 
 // Run requests every 1 second
 //setInterval(runRequests, 1000 * 12);
-setInterval(runRequests, 1000);
+setInterval(runRequests, 3000);
 
 sendButton.onclick = sendControl;
 
@@ -87,4 +109,29 @@ function sendControl() {
     makePostRequest(postUrl, OFFData);
   }
   inputValue.value = "";
+}
+
+function sendEmail() {
+  // Define the email parameters
+  const emailParams = {
+    to_name: "Recipient Name",
+    from_name: "Your Name",
+    message: messageData,
+  };
+  //"template_5dxumx6"
+
+  // Send the email using the service and template IDs
+  emailjs.send("service_4d4nvnk", "template_r9mm38l", emailParams).then(
+    function (response) {
+      console.log("SUCCESS!", response.status, response.text);
+      console.log("Email sent successfully!");
+      sms = "Email sent check you account";
+      flag = false;
+    },
+    function (error) {
+      console.log("FAILED...", error);
+      console.log("Failed to send email.");
+      flag = true;
+    }
+  );
 }
